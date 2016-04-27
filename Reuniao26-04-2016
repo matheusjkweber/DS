@@ -1,0 +1,14 @@
+Definição:
+- GUI
+-- Aba Tabela
+--- Tabela para mostrar Receitas e Despesas.
+--- Botao para filtrar "Só receita", "Só Despesa", "de dd/mm/yyy ate dd/mm/yyy", "Categoria"
+-- Aba Relatorios
+-- Menu fixo
+--- Cadastrar receita.
+--- Cadastrar despesa.
+--- Exportar os dados.
+
+Divisão das tarefas e definicoes:
+- Vamos usar o netbeans.
+- Yuri e Soares vao fazer a GUI.
