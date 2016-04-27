@@ -4,7 +4,10 @@ Definição:
 --- Tabela para mostrar Receitas e Despesas.
 --- Botao para filtrar "Só receita", "Só Despesa", "de dd/mm/yyy ate dd/mm/yyy", "Categoria"
 -- Aba Relatorios
+--- Pizza para gastos e receitas por categorias.
+--- Barra com gastos e receitas por mes.
 -- Menu fixo
+--- Label Saldo
 --- Cadastrar receita.
 --- Cadastrar despesa.
 --- Exportar os dados.
