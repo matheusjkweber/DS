@@ -1,0 +1,10 @@
+id,type,value,category,title,datetime
+8,Revenue,1000.0,8,,Tue Apr 05 00:00:00 BRT 2016
+7,Revenue,400.0,9,,Sat Apr 09 00:00:00 BRT 2016
+3,Charge,100.0,6,,Thu May 05 00:00:00 BRT 2016
+5,Revenue,1000.0,8,,Thu May 05 00:00:00 BRT 2016
+0,Charge,900.0,2,Aluguel,Mon May 09 00:00:00 BRT 2016
+1,Charge,20.0,1,Ração,Mon May 09 00:00:00 BRT 2016
+2,Charge,100.0,12,,Mon May 09 00:00:00 BRT 2016
+4,Charge,130.0,3,,Mon May 09 00:00:00 BRT 2016
+6,Revenue,400.0,9,,Mon May 09 00:00:00 BRT 2016
