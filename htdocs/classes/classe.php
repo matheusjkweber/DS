@@ -1,0 +1,10 @@
+<?php
+	include("Access.php");
+	include("User.php");
+	include("Admin.php");
+	include("State.php");
+	include("City.php");
+	include("District.php");
+	include("Category.php");
+	include("Data.php");
+?>
