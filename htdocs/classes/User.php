@@ -49,7 +49,7 @@
 
 			$this->gender = $gender;
 			$this->zipcode = $zipcode;
-			$this->idDistrict = $idDistrict
+			$this->idDistrict = $idDistrict;
 
 			$sql = "Update user set name = '$name', email='$email',birthday='$birthday', gender='$gender', zipcode='$zipcode', idDistrict='$idDistrict' where cpf = '$this->cpf'";
 			$res = mysql_query($sql) or die(mysql_error());
@@ -102,6 +102,16 @@
 		function edit_password($password){
 			$sql = "Update User set password = '$password' where cpf = '$this->cpf'";
 			$res = mysql_query($sql) or die(mysql_error());	
+		}
+
+		function verify_data(){
+			$sql = "Select * from data where cpf = '$this->cpf'";
+			$res = mysql_query($sql) or die(mysql_error());	
+			if(mysql_num_rows($res)>0){
+				return true;
+			}else{
+				return false;
+			}
 		}
 		
 	}
