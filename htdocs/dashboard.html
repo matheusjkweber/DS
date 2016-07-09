@@ -71,19 +71,27 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="row">
+                <div class="row m-b-10">
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             Dashboard 
                         </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
 
-                        <div class="row m-b-20" id="date">
-                            <div class="col-md-4 col-md-offset-5">
-                                de <input type="text" id="datepicker-to"> até <input type="text" id="datepicker-from">
-                            </div>
-                        </div>
+                <div class="row m-b-20" id="date">
+                    <div class="col-md-6 col-md-offset-4">
+                        de <input type="text" id="datepicker-from"> até <input type="text" id="datepicker-to">
 
-                        
+                        <button type="button" id="filter" class="btn btn-secondary btn-sm">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-10 col-md-offset-1">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Bar Graph Example</h3>
@@ -95,12 +103,9 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <!-- /.row -->
                
-
             </div>
             <!-- /.container-fluid -->
 
@@ -158,7 +163,7 @@
             });
         })
 
-        var picker = new Pikaday({ field: document.getElementById('datepicker-from'),
+        var pickerTo = new Pikaday({ field: document.getElementById('datepicker-to'),
                                position: "bottom-right",
                                reposition: false,
                                format: "DD/MM/YY",
@@ -170,8 +175,28 @@
                                     weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
                                 }
                              });
+
+        var pickerFrom = new Pikaday({ field: document.getElementById('datepicker-from'),
+                               position: "bottom-right",
+                               reposition: false,
+                               format: "DD/MM/YY",
+                               i18n: {
+                                    previousMonth : 'Mês Anterior',
+                                    nextMonth     : 'Próximo Mês',
+                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
+                                }
+                             });
+
+        $("button#filter").click(function(){
+            var initialDate = $("#datepicker-from").val().toString();
+            var finalDate   = $("#datepicker-to").val().toString();
+        })
     </script>
 
 </body>
 
 </html>
+
+

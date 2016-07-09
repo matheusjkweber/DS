@@ -86,9 +86,13 @@
                 <!-- /.row -->
 
                 <div class="row m-b-20" id="date">
-                	<div class="col-md-4 col-md-offset-5">
-                		de <input type="text" id="datepicker-to"> até <input type="text" id="datepicker-from">
-                	</div>
+                	<div class="col-md-6 col-md-offset-4">
+                		de <input type="text" id="datepicker-from"> até <input type="text" id="datepicker-to">
+                	
+	                	<button type="button" id="filter" class="btn btn-secondary btn-sm">
+	                        <i class="fa fa-filter" aria-hidden="true"></i>
+	                    </button>
+                    </div>
                 </div>
 
 
@@ -151,7 +155,7 @@
 </html>
 
 <script>
-	var picker = new Pikaday({ field: document.getElementById('datepicker-to'),
+	var pickerTo = new Pikaday({ field: document.getElementById('datepicker-to'),
                                position: "bottom-right",
                                reposition: false,
                                format: "DD/MM/YY",
@@ -164,7 +168,7 @@
                                 }
                              });
 
-    var picker = new Pikaday({ field: document.getElementById('datepicker-from'),
+    var pickerFrom = new Pikaday({ field: document.getElementById('datepicker-from'),
                                position: "bottom-right",
                                reposition: false,
                                format: "DD/MM/YY",
@@ -176,6 +180,11 @@
                                     weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
                                 }
                              });
+
+    $("button#filter").click(function(){
+        var initialDate = $("#datepicker-from").val().toString();
+        var finalDate   = $("#datepicker-to").val().toString();
+    })
 </script>
 
 
