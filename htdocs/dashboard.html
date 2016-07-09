@@ -77,6 +77,12 @@
                             Dashboard 
                         </h1>
 
+                        <div class="row m-b-20" id="date">
+                            <div class="col-md-4 col-md-offset-5">
+                                de <input type="text" id="datepicker-to"> até <input type="text" id="datepicker-from">
+                            </div>
+                        </div>
+
                         
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -115,6 +121,10 @@
     <script src="js/plugins/morris/morris.min.js"></script>
     <!-- <script src="js/plugins/morris/morris-data.js"></script> -->
 
+    <script src="js/moment.min.js"></script>
+
+    <script src="js/pikaday.js"></script>
+
     <script type="text/javascript">
         $(function(){
             Morris.Bar({
@@ -147,6 +157,19 @@
                 resize: true
             });
         })
+
+        var picker = new Pikaday({ field: document.getElementById('datepicker-from'),
+                               position: "bottom-right",
+                               reposition: false,
+                               format: "DD/MM/YY",
+                               i18n: {
+                                    previousMonth : 'Mês Anterior',
+                                    nextMonth     : 'Próximo Mês',
+                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
+                                }
+                             });
     </script>
 
 </body>
