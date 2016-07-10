@@ -23,6 +23,8 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,7 +41,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div style="float: right">
-                <p class="small" style="padding-top: 20px; padding-right: 20px; color: gray"> Olá, usuário.</p>
+                <p style="padding-top: 20px; padding-right: 20px; color: gray"> Olá, usuário.</p>
             </div>
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -81,8 +83,22 @@
                 <!-- /.row -->
 
                 <div class="row m-b-20" id="date">
-                    <div class="col-md-6 col-md-offset-4">
+                    <div class="col-md-10 col-md-offset-2">
+                        <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
                         de <input type="text" id="datepicker-from"> até <input type="text" id="datepicker-to">
+                        por <select class="selectpicker" id="granularity" data-style="btn-default small">
+                                <option value="day"> dia </option>
+                                <option value="month"> mês </option>
+                                <option value="year"> ano </option>
+                            </select>
+                        <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i>
+                        em  <select id="city" class="selectpicker" data-style="btn-default medium">
+                                <option value="1" selected disabled>Fortaleza</option>
+                            </select>
+                            <select id="state" class="selectpicker" data-style="btn-default tiny">
+                                <option value="2" selected disabled>CE</option>
+                            </select>
+
 
                         <button type="button" id="filter" class="btn btn-secondary btn-sm">
                             <i class="fa fa-filter" aria-hidden="true"></i>
@@ -94,13 +110,10 @@
                     <div class="col-lg-10 col-md-offset-1">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Bar Graph Example</h3>
+                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> R$ por Categoria</h3>
                             </div>
                             <div class="panel-body">
                                 <div id="morris-bar-chart"></div>
-                                <div class="text-right">
-                                    <a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,6 +134,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+
     <!-- Morris Charts JavaScript -->
     <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
@@ -135,27 +150,33 @@
             Morris.Bar({
                 element: 'morris-bar-chart',
                 data: [{
-                    device: 'iPhone',
-                    geekbench: 136
+                    device: 'categoria 1',
+                    outros: 136,
+                    você: 50
                 }, {
-                    device: 'iPhone 3G',
-                    geekbench: 137
+                    device: 'categoria 2',
+                    outros: 136,
+                    você: 50
                 }, {
-                    device: 'iPhone 3GS',
-                    geekbench: 275
+                    device: 'categoria 3',
+                    outros: 136,
+                    você: 50
                 }, {
-                    device: 'iPhone 4',
-                    geekbench: 380
+                    device: 'categoria 4',
+                    outros: 136,
+                    você: 50
                 }, {
-                    device: 'iPhone 4S',
-                    geekbench: 655
+                    device: 'categoria 5',
+                    outros: 136,
+                    você: 50
                 }, {
-                    device: 'iPhone 5',
-                    geekbench: 1571
+                    device: 'categoria 6',
+                    outros: 136,
+                    você: 50
                 }],
                 xkey: 'device',
-                ykeys: ['geekbench'],
-                labels: ['Geekbench'],
+                ykeys: ['outros', 'você'],
+                labels: ['Outros', 'Você'],
                 barRatio: 0.4,
                 xLabelAngle: 35,
                 hideHover: 'auto',
@@ -189,9 +210,19 @@
                                 }
                              });
 
+
         $("button#filter").click(function(){
             var initialDate = $("#datepicker-from").val().toString();
             var finalDate   = $("#datepicker-to").val().toString();
+            var granularity = $("#granularity").val();
+            var city        = $("#city").val();
+            var state       = $("#state").val();
+
+            console.info(initialDate);
+            console.info(finalDate);
+            console.info(granularity);
+            console.info(city);
+            console.info(state);
         })
     </script>
 

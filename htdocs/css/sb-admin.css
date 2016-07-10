@@ -5,7 +5,6 @@
  */
 
 /* Global Styles */
-p { font-family: Helvetica Neue; }
 
 body {
     margin-top: 100px;
@@ -480,3 +479,22 @@ input#datepicker-from {
 
 .m-b-20 { margin-bottom: 20px }
 .m-b-10 { margin-bottom: 10px }
+
+.tiny {
+    line-height: 12px;
+    width: 60px !important;
+}
+
+.small {
+    line-height: 12px;
+    width: 80px !important;
+}
+
+.medium {
+    line-height: 12px;
+    width: 130px !important;
+}
+
+.bootstrap-select {
+    width: initial !important;
+}
