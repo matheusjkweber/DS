@@ -470,5 +470,13 @@ input#datepicker-from {
     padding-left: 45px;
 }
 
+#form {
+    font-weight: 200;
+}
+
+.signup {
+    margin-top: 20px;
+}
+
 .m-b-20 { margin-bottom: 20px }
 .m-b-10 { margin-bottom: 10px }
