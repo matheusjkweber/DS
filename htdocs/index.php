@@ -1,3 +1,7 @@
+<?php
+    include('inc/inc.configdb.php');
+    include('inc/functions.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +50,14 @@
             $('.send_form').click(function(){
                 $('#email_1').val($('#email').val());
                 $('#pass_1').val($('#pass').val());
-                $('#form').submit();
+                $('#form1').submit();
+            });
+            $('#inputState').change(function(){
+                $('#inputCity').load('ajax/cities.php?idState='+$('#inputState').val());
+            });
+
+            $('#inputCity').change(function(){
+                $('#inputDistrict').load('ajax/districts.php?idCity='+$('#inputCity').val());
             });
         });
     </script>
@@ -54,7 +65,7 @@
 
 <body>
     <div id="ex1" style="display:none;overflow:visible;">
-        <form role="form" id="form" action="exec.php" method="post" enctype="multipart/form-data">
+        <form role="form" id="form1" action="exec.php" method="post" enctype="multipart/form-data">
             <input class="form-control" id="email_1" type="hidden" name="email" placeholder="Email" required>   
             <input class="form-control" id="pass_1" type="hidden" name="senha" placeholder="Senha" required>
             <input type="hidden" name="action" value="login">
@@ -109,7 +120,7 @@
             </div>
         </div>
         <div class="col-lg-4 text-center login">
-            <a href="#" rel="modal:open" class="btn btn-default"><i class="fa fa-download" aria-hidden="true"></i> Baixar Sistema Desktop</a>
+            <a href="https://github.com/matheusjkweber/DS/raw/master/OperationsApp.zip" target="_blank" class="btn btn-default"><i class="fa fa-download" aria-hidden="true"></i> Baixar Sistema Desktop</a>
         </div>
     </div>
 
@@ -122,41 +133,82 @@
                           <div class="form-group row">
                             <label for="inputName" class="col-sm-2 form-control-label">Nome</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="name" id="inputName" placeholder="Nome">
+                                <input type="text" class="form-control" name="name" id="inputName" placeholder="Nome" required>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <label for="inputMail" class="col-sm-2 form-control-label">Email</label>
                             <div class="col-sm-8">
-                              <input type="email" class="form-control" name="email" id="inputMail" placeholder="E-mail">
+                              <input type="email" class="form-control" name="email" id="inputMail" placeholder="E-mail" required>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="inputMail" class="col-sm-2 form-control-label">CPF</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" name="cpf" id="inputMail" placeholder="CPF" required>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="inputMail" class="col-sm-2 form-control-label">Sexo</label>
+                            <div class="col-sm-8">
+                              <select name="gender" class="form-control" required>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 form-control-label">Senha</label>
                             <div class="col-sm-8">
-                              <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Senha">
+                              <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Senha" required>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 form-control-label"><small>Repita a Senha</small></label>
+                            <div class="col-sm-8">
+                              <input type="password" class="form-control" name="password1" id="inputPassword" placeholder="Senha" required>
+                            </div>
+                           </div>
+
+                           <div class="form-group row">
+                            <label for="inputMail" class="col-sm-2 form-control-label">CEP</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control" name="cep" id="inputMail" placeholder="CEP" required>
+                            </div>
+                          </div>
+
+                           <div class="form-group row">
+                            <label for="inputState" class="col-sm-2 form-control-label">Estado</label>
+                            <div class="col-sm-8">
+                              <select class="form-control" name="state" id="inputState" required>
+                                <?php print_states();?>
+                              </select>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <label for="inputCity" class="col-sm-2 form-control-label">Cidade</label>
                             <div class="col-sm-8">
-                              <select class="form-control" name ="city" id="inputCity">
-                                    <?php print_cities();?>
+                              <select class="form-control" name ="city" id="inputCity" required>
+                                    <option> Selecione um Estado</option>
                               </select>
                             </div>
                           </div>
 
                           <div class="form-group row">
-                            <label for="inputState" class="col-sm-2 form-control-label">Estado</label>
-                            <div class="col-sm-3">
-                              <select class="form-control" name="state" id="inputState">
+                            <label for="inputCity" class="col-sm-2 form-control-label">Bairro</label>
+                            <div class="col-sm-8">
+                              <select class="form-control" name ="district" id="inputDistrict" required>
+                                    <option> Selecione uma Cidade</option>
                               </select>
                             </div>
                           </div>
-
+                         
                           <div class="form-group row">
                             <div class="col-sm-offset-2 col-sm-8">
                                 <input type="submit" class="btn btn-default" value="Pronto!">

@@ -2,6 +2,7 @@
     require_once('classes/classe.php');
     require_once('inc/inc.sessao.php');
     require_once('inc/inc.configdb.php');
+    error_reporting(0);
     $user = $_SESSION['user'];
 ?>
 <!DOCTYPE html>
@@ -39,6 +40,7 @@
 </head>
 
 <body>
+
 
     <div id="wrapper">
 
@@ -81,6 +83,7 @@
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
+            <!-- /.navbar-collapse -->
         </nav>
 
        <div id="page-wrapper">
@@ -91,7 +94,7 @@
                 <div class="row m-b-10">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Dashboard 
+                            Despesas
                         </h1>
                     </div>
                 </div>
@@ -99,30 +102,52 @@
 
                 <div class="row m-b-20" id="date">
                     <div class="col-md-6 col-md-offset-4">
-                        de <input type="text" id="datepicker-from"> até <input type="text" id="datepicker-to">
-
-                        <button type="button" id="filter" class="btn btn-secondary btn-sm">
-                            <i class="fa fa-filter" aria-hidden="true"></i>
-                        </button>
+                        <form action="costs.php" id="form" method="post">
+                            de <input type="text" id="datepicker-from" name="from"> até <input type="text" id="datepicker-to" name="to">
+                        
+                            <button type="button" id="filter" class="btn btn-secondary btn-sm">
+                                <i class="fa fa-filter" aria-hidden="true"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-10 col-md-offset-1">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Suas Finanças</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div id="morris-bar-chart"></div>
-                                <div class="text-right">
-                                    <a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
-                            </div>
+                 <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Categoria</th>
+                                        <th>Valor</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php
+                                        $user->print_operations(1,antiSQLInjection($_REQUEST['from']),antiSQLInjection($_REQUEST['to']));
+                                    ?>
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+                <!-- /.row -->
+
+                <div class="row">
+                	<div class="col-lg-2">
+                		<!-- font-color: rgba(175, 22, 22, 0.44) para fundo vermelho
+                		-->
+                		<p class="small" id="balance">
+                        	Saldo Atual: R$ <?php  echo number_format($user->get_balance(),2,',','.');?>
+                        </p>
+                	</div>
+                </div>
                
+
             </div>
             <!-- /.container-fluid -->
 
@@ -138,83 +163,49 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <!-- <script src="js/plugins/morris/morris-data.js"></script> -->
-
     <script src="js/moment.min.js"></script>
 
     <script src="js/pikaday.js"></script>
-
-    <script type="text/javascript">
-        $(function(){
-
-            Morris.Bar({
-                element: 'morris-bar-chart',
-                data: [{
-                    device: 'iPhone',
-                    geekbench: 136
-                }, {
-                    device: 'iPhone 3G',
-                    geekbench: 137
-                }, {
-                    device: 'iPhone 3GS',
-                    geekbench: 275
-                }, {
-                    device: 'iPhone 4',
-                    geekbench: 380
-                }, {
-                    device: 'iPhone 4S',
-                    geekbench: 655
-                }, {
-                    device: 'iPhone 5',
-                    geekbench: 1571
-                }],
-                xkey: 'device',
-                ykeys: ['geekbench'],
-                labels: ['Geekbench'],
-                barRatio: 0.4,
-                xLabelAngle: 35,
-                hideHover: 'auto',
-                resize: true
-            });
-        })
-
-        var pickerTo = new Pikaday({ field: document.getElementById('datepicker-to'),
-                               position: "bottom-right",
-                               reposition: false,
-                               format: "DD/MM/YY",
-                               i18n: {
-                                    previousMonth : 'Mês Anterior',
-                                    nextMonth     : 'Próximo Mês',
-                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
-                                }
-                             });
-
-        var pickerFrom = new Pikaday({ field: document.getElementById('datepicker-from'),
-                               position: "bottom-right",
-                               reposition: false,
-                               format: "DD/MM/YY",
-                               i18n: {
-                                    previousMonth : 'Mês Anterior',
-                                    nextMonth     : 'Próximo Mês',
-                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
-                                }
-                             });
-
-        $("button#filter").click(function(){
-            var initialDate = $("#datepicker-from").val().toString();
-            var finalDate   = $("#datepicker-to").val().toString();
-        })
-    </script>
 
 </body>
 
 </html>
 
+<script>
+    $(document).ready(function(){
+        $('#filter').click(function(){
+            $('#form').submit();
+        });
+    });
+    var pickerTo = new Pikaday({ field: document.getElementById('datepicker-to'),
+                               position: "bottom-right",
+                               reposition: false,
+                               format: "YYYY-MM-DD",
+                               i18n: {
+                                    previousMonth : 'Mês Anterior',
+                                    nextMonth     : 'Próximo Mês',
+                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
+                                }
+                             });
+
+    var pickerFrom = new Pikaday({ field: document.getElementById('datepicker-from'),
+                               position: "bottom-right",
+                               reposition: false,
+                               format: "YYYY-MM-DD",
+                               i18n: {
+                                    previousMonth : 'Mês Anterior',
+                                    nextMonth     : 'Próximo Mês',
+                                    months        : ['Janeiro','Fevereiro','March','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                                    weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+                                    weekdaysShort : ['Dom','Seg','Ter','Qua','Qui','Sex','Sab']
+                                }
+                             });
+
+    $("button#filter").click(function(){
+        var initialDate = $("#datepicker-from").val().toString();
+        var finalDate   = $("#datepicker-to").val().toString();
+    })
+</script>
 

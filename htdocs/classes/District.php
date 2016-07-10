@@ -45,7 +45,7 @@
 				
 		}
 
-		function getCity(){
+		function get_city(){
 			return new City($this->idCity);
 		}
 

@@ -90,6 +90,12 @@
 			return new Category($this->idCategory);
 		}
 
+		function get_formatted_date(){
+			$date = explode(' ',$this->datetime);
+			$date = explode('-',$date[0]);
+			return $date[2].'/'.$date[1].'/'.$date[0];
+		}
+
 		
 	}
 	
