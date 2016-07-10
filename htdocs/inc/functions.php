@@ -88,4 +88,43 @@
 		mail($destinatario,$assunto,$corpo,$headers);
 	
 	}
+
+	function print_states($idState=0){
+		if($idState==0 || empty($idState)) $idState = 0;
+		if($idState==0) echo '<option value="0"> Selecione um estado </option>';
+			$Query = mysql_query("Select * from state where idState = $idState") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idState'].'">'.utf8_encode($a['name']).'</option>';
+		}
+		$Query = mysql_query("Select * from state where idState <> $idState") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idState'].'">'.utf8_encode($a['name']).'</option>';
+		}
+	}
+	
+	function print_cities($idState=0,$idCity=0){
+		if($idCity==0 || empty($idCity)) $idCity = 0;
+		if($idCity==0) echo '<option value="0"> Selecione uma cidade </option>';
+		$Query = mysql_query("Select * from city where idCity = $idCity and idState = $idState") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idCity'].'">'.utf8_encode($a['name']).'</option>';
+		}
+		$Query = mysql_query("Select * from city where idCity <> $idCity and idState = $idState") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idCity'].'">'.utf8_encode($a['name']).'</option>';
+		}
+	}
+
+	function print_districts($idCity=0,$idDistrict=0){
+		if($idDistrict==0 || empty($idDistrict)) $idDistrict = 0;
+		if($idDistrict==0) echo '<option value="0"> Selecione um bairro </option>';
+		$Query = mysql_query("Select * from district where idCity = $idCity and idDistrict = $idDistrict") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idDistrict'].'">'.utf8_encode($a['name']).'</option>';
+		}
+		$Query = mysql_query("Select * from district where idCity = $idCity and idDistrict <> $idDistrict") or die(mysql_error());
+		while($a = mysql_fetch_array($Query)){
+			echo '<option value="'.$a['idDistrict'].'">'.utf8_encode($a['name']).'</option>';
+		}
+	}
 	
