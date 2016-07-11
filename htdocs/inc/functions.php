@@ -91,7 +91,7 @@
 
 	function print_states($idState=0){
 		if($idState==0 || empty($idState)) $idState = 0;
-		if($idState==0) echo '<option value="0"> Selecione um estado </option>';
+		if($idState==0) echo '<option value="0"> Selecione um Estado </option>';
 			$Query = mysql_query("Select * from state where idState = $idState") or die(mysql_error());
 		while($a = mysql_fetch_array($Query)){
 			echo '<option value="'.$a['idState'].'">'.utf8_encode($a['name']).'</option>';
@@ -104,7 +104,7 @@
 	
 	function print_cities($idState=0,$idCity=0){
 		if($idCity==0 || empty($idCity)) $idCity = 0;
-		if($idCity==0) echo '<option value="0"> Selecione uma cidade </option>';
+		if($idCity==0) echo '<option value="0"> Selecione uma Cidade </option>';
 		$Query = mysql_query("Select * from city where idCity = $idCity and idState = $idState") or die(mysql_error());
 		while($a = mysql_fetch_array($Query)){
 			echo '<option value="'.$a['idCity'].'">'.utf8_encode($a['name']).'</option>';

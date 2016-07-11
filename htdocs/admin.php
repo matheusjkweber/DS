@@ -2,6 +2,13 @@
     require_once('classes/classe.php');
     require_once('inc/inc.sessao.php');
     require_once('inc/inc.configdb.php');
+
+    if($_SESSION['is_admin']!=true){
+        echo '<script>
+        alert("Você não tem permissão para acessar essa página.");
+        location.href="index.php";</script>';
+        die();
+    }
     $user = $_SESSION['user'];
 ?>
 <!DOCTYPE html>
@@ -51,7 +58,7 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+                    <li>
                         <a href="dashboard.php"><i class="fa fa-fw fa-bar-chart-o"></i> Dashboard</a>
                     </li>
                     <li>
@@ -67,7 +74,7 @@
 
                     <?php
                         if($_SESSION['is_admin']==true){
-                            echo '<li>
+                            echo '<li class="active">
                                 <a href="admin.php"><i class="fa fa-user-md" aria-hidden="true"></i> Admin</a>
                             </li>';
                         }
@@ -90,7 +97,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <div class="row">
+                <div class="row m-b-10">
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             Admin
@@ -98,6 +105,56 @@
                     </div>
                 </div>
                 <!-- /.row -->
+
+                <div class="row m-b-20" id="date">
+                    <div class="col-md-6 col-md-offset-4">
+                         <form action="admin.php" id="form" method="post">
+                            procurar por <input type="text" name="name" id="user-mail" placeholder="e-mail">
+
+                        <button type="button" id="filter" class="btn btn-secondary btn-sm">
+                                <i class="fa fa-filter" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>CPF</th>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php
+                                        if(!empty($_POST['name']) && isset($_POST['name'])){
+                                            $Query = mysql_query("Select * from user where cpf <> '$user->get_cpf()' and name like '%".antiSQLInjection($_POST['name'])."%' order by name asc") or die(mysql_error());
+                                        }else $Query = mysql_query("Select * from user where cpf <> '$user->get_cpf()' order by name asc") or die(mysql_error());
+                                        while($a = mysql_fetch_array($Query)){
+                                            echo '<tr>
+                                        <td>'.$a['cpf'].'</td>
+                                        <td>'.utf8_encode($a['name']).'</td>
+                                        <td>'.utf8_encode($a['email']).'</td>
+                                        <td style="text-align: center">
+                                            <a href="exec.php?action=del_user&id='.$a['cpf'].'">
+                                                <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>';
+                                        }
+                                        ?>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                
 
             </div>
@@ -107,10 +164,20 @@
         <!-- /#page-wrapper -->
 
     </div>
+        <!-- /#page-wrapper -->
+
+    </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#filter').click(function(){
+                $('#form').submit();
+            });
+        });
+    </script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

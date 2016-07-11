@@ -52,10 +52,10 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+                    <li>
                         <a href="dashboard.php"><i class="fa fa-fw fa-bar-chart-o"></i> Dashboard</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="revenues.php"><i class="fa fa-smile-o" aria-hidden="true"></i> Receitas</a>
                     </li>
                     <li>
@@ -103,7 +103,7 @@
                 <div class="row m-b-20" id="date">
                 	<div class="col-md-6 col-md-offset-4">
                         <form action="revenues.php" id="form" method="post">
-                    		de <input type="text" id="datepicker-from" name="from"> até <input type="text" id="datepicker-to" name="to">
+                    		de <input type="text" id="datepicker-from" name="from" style="width: 77px;"> até <input type="text" id="datepicker-to" name="to" style="width: 77px;">
                     	
     	                	<button type="button" id="filter" class="btn btn-secondary btn-sm">
     	                        <i class="fa fa-filter" aria-hidden="true"></i>

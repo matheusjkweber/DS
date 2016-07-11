@@ -17,6 +17,7 @@
 				$password = (antiSQLInjection($_POST['senha']));
 				$Query = mysql_query("Select * from user where email = '$email' and password = '".sha1($password)."'") or die(mysql_error());
 				if(mysql_num_rows($Query)>0){
+
 					$user = mysql_fetch_array($Query);
 					$user1 = new User(0,$user['cpf']);
 					$_SESSION['is_admin'] = $user1->isAdmin();
@@ -34,15 +35,9 @@
 					$_UP['pasta'] = 'files/';
 					
 					$ext = strtolower(end(explode('.', $_FILES['file']['name'])));
-					if (array_search($ext, ['csv']) === false) {
-						if($user1->verify_data()){
-							$dest = 'dashboard.php';
-						}else{
-							$msg = 'Por favor envie algum dado do software.';
-					  		$dest = 'index.php';
-						}
-						break;
-					}
+					
+						
+					
 					
 					$final_name = md5(time()).'.csv';
 					  
@@ -68,20 +63,37 @@
 						        $month = month_to_number($date[1]);
 						        $year = substr($date[5],0,-1);
 						        $time = $date[3];
-						        
-						        $sql = "Insert into data values('','".$user['cpf']."','".$line[3]."','$type','".$line[2]."','".utf8_decode($line[4])."','$year-$month-$day $time')";
-						        $db->query($sql);
-
-						        
+						        $Query = mysql_query("Select * from data where cpf = '".$user1->get_cpf()."' and idCategory = '".$line[3]."' and type = '$type' and title = '".utf8_decode($line[4])."' and datetime = '$year-$month-$day $time'") or die(mysql_error());
+						        if(mysql_num_rows($Query)==0){
+						        	$sql = "Insert into data values('','".$user1->get_cpf()."','".$line[3]."','$type','".$line[2]."','".utf8_decode($line[4])."','$year-$month-$day $time')";
+						        	$db->query($sql);
+						        }   
 						    }
 						    $dest = 'dashboard.php';
 						    fclose($fp);
 						} else {
+							if($user1->verify_data()){
+								$dest = 'dashboard.php';
+								break;
+							}else{
+								$msg = 'Por favor envie algum dado do software.';
+							  	$dest = 'index.php';
+							  	break;
+							}
+						
 						    $msg = 'Arquivo incorreto.';
 							$dest = 'index.php';
 							break;
 						} 
 					} else {
+						if($user1->verify_data()){
+							$dest = 'dashboard.php';
+							break;
+						}else{
+							$msg = 'Por favor envie algum dado do software.';
+						  	$dest = 'index.php';
+						  	break;
+						}
 					  $msg = 'Arquivo incorreto.';
 					  $dest = 'index.php';
 					  break;
@@ -158,7 +170,6 @@
 			$district = antiSQLInjection($_REQUEST['district']);
 			$gender = antiSQLInjection($_REQUEST['gender']);
 			$cep = antiSQLInjection($_REQUEST['cep']);
-
 			$cpf = str_replace('-','', str_replace('.','',antiSQLInjection($_REQUEST['cpf'])));
 
 			if(!empty($name) && !empty($email) && !empty($state) && !empty($city) && strlen($cpf) == 11 && !empty($district) && !empty($gender) && !empty($cep)){
@@ -167,10 +178,9 @@
 						if($state > 0 && $city > 0 && $district > 0){
 							$Query = mysql_query("Select * from user where email = '$email' or cpf = '$cpf'") or die(mysql_error());
 							if(mysql_num_rows($Query)==0){
-								$user = new User($cpf, $name, $email, sha1($pass), '', $gender,$cep,$district);
-								$_SESSION['is_admin'] = false;
-								$_SESSION['user'] = $user;
-								$dest = 'dashboard.php';
+								$user = new User(1,$cpf, $name, $email, sha1($pass), '', $gender,$cep,$district);
+								$msg = "Usuário cadastrado com sucesso! Faça agora seu login.";
+								$dest = 'index.php';
 							}else{
 								$msg = "Email ou cpf já cadastrados em nosso sistema.";
 								$dest = 'index.php';
@@ -246,10 +256,27 @@
 				$msg = "Por favor preencha todos os campos.";
 				$dest = 'edit_user.php';
 			}
+		break;
+
+		case 'del_user':
+
+			if($_SESSION['is_admin']==true){
+				$sql = "Delete from data where cpf = '".antiSQLInjection($_GET['id'])."'";
+				$db->query($sql);
+				$sql = "Delete from user where cpf = '".antiSQLInjection($_GET['id'])."'";
+				$db->query($sql);
+
+				$dest = 'admin.php';
+				
+			}else{
+				$msg = "Você não pode efetuar essa ação.";
+				$dest = 'index.php';
+			}
+		break;
 	}
 	
 	if(!empty($msg)){
-		echo '<script> alert("'.$msg.'"); </script>';
+		echo '<script> alert("'.utf8_decode($msg).'"); </script>';
 	}
 
 	echo '<script> location.href="'.$dest.'"; </script>';

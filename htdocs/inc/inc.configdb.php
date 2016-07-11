@@ -2,10 +2,10 @@
 
 require_once('class.DbAdmin.inc.php');
 
-	define('HOST', 'localhost');
-	define('USER', 'root');
-	define('PASS', '');
-	define('BASE', 'ds');
+	define('HOST', 'mysql04.site1364927330.hospedagemdesites.ws');
+	define('USER', 'site13649273303');
+	define('PASS', 'padraods123');
+	define('BASE', 'site13649273303');
 
 
 

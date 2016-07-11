@@ -2,7 +2,9 @@
     require_once('classes/classe.php');
     require_once('inc/inc.sessao.php');
     require_once('inc/inc.configdb.php');
+    require_once('inc/functions.php');
     $user = $_SESSION['user'];
+    error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +30,8 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -83,7 +87,7 @@
             <!-- /.navbar-collapse -->
         </nav>
 
-       <div id="page-wrapper">
+      <div id="page-wrapper">
 
             <div class="container-fluid">
 
@@ -96,14 +100,47 @@
                     </div>
                 </div>
                 <!-- /.row -->
-
+                <div class="row m-b-10">
+                    <div class="col-lg-12">
+                        <p>Você pode ver dados até o dia: <?php echo $user->last_day();?> </p>
+                    </div>
+                </div>
                 <div class="row m-b-20" id="date">
-                    <div class="col-md-6 col-md-offset-4">
-                        de <input type="text" id="datepicker-from"> até <input type="text" id="datepicker-to">
+                    <div class="col-md-10 col-md-offset-2" style="margin-left: 111px;">
+                        <form action="dashboard.php" id="form" method="post">
+                            <i class="fa fa-calendar fa-lg" aria-hidden="true" style="float:left;margin-right:5px;margin-top:5px;"></i>
+                            <font style="float:left;margin-right:5px;margin-top:5px;">de</font> 
+                            <input type="text" id="datepicker-from" name="from" style="float:left;margin-right:5px;width:95px;"  value="<?php echo antiSQLInjection($_POST['from']);?>"> 
+                            <font style="float:left;margin-right:5px;margin-top:5px;">até</font> 
+                            <input type="text" value="<?php echo antiSQLInjection($_POST['to']);?>" id="datepicker-to" name="to" style="float:left;margin-right:5px;width:95px;">
+                            <font style="float:left;margin-right:5px;margin-top:5px;">por</font> 
+                            <select class="form-control" name="type" id="granularity" data-style="btn-default small" style="float:left;width:155px;margin-right:5px;">
+                                    <option value="2" <?php if(antiSQLInjection($_POST['type']) == 2) echo 'selected="selected"';?>> Receita/Despesa </option>
+                                    <option value="3" <?php if(antiSQLInjection($_POST['type']) == 3) echo 'selected="selected"';?>> Receita </option>
+                                    <option value="1" <?php if(antiSQLInjection($_POST['type']) == 1) echo 'selected="selected"';?>> Despesa </option>
+                                    
+                                </select>
+                            <i class="fa fa-map-marker fa-lg" aria-hidden="true" style="float:left;margin-right:5px;margin-top:5px;"></i>
+                            <select id="inputState" class="form-control" name="state" data-style="btn-default tiny" style="float:left;width:200px;margin-right:5px;">
+                                    <?php print_states(antiSQLInjection($_POST['state']));?>
+                                </select>
+                            <font style="float:left;margin-right:5px;margin-top:5px;">em</font>  
+                            <select id="inputCity" class="form-control" name="city" data-style="btn-default medium" style="float:left;width:200px;margin-right:5px;">
+                                    <?php
 
-                        <button type="button" id="filter" class="btn btn-secondary btn-sm">
-                            <i class="fa fa-filter" aria-hidden="true"></i>
-                        </button>
+                                        if(!isset($_POST['city'])){
+                                           echo '<option> Selecione um Estado</option>'; 
+                                        } 
+                                        else print_cities(antiSQLInjection($_POST['state']),antiSQLInjection($_POST['city']));
+                                    ?>
+                                </select>
+                                
+
+
+                            <button type="button" id="filter" class="btn btn-secondary btn-sm">
+                                <i class="fa fa-filter" aria-hidden="true"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -111,13 +148,10 @@
                     <div class="col-lg-10 col-md-offset-1">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Suas Finanças</h3>
+                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> R$ por Categoria</h3>
                             </div>
                             <div class="panel-body">
                                 <div id="morris-bar-chart"></div>
-                                <div class="text-right">
-                                    <a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +172,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+
     <!-- Morris Charts JavaScript -->
     <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
@@ -147,33 +183,33 @@
 
     <script src="js/pikaday.js"></script>
 
+    <script>
+        $(document).ready(function(){
+            $('#filter').click(function(){
+             $('#form').submit();
+            });
+            $('#inputState').change(function(){
+                $('#inputCity').load('ajax/cities.php?idState='+$('#inputState').val());
+            });
+
+            $('#inputCity').change(function(){
+                $('#inputDistrict').load('ajax/districts.php?idCity='+$('#inputCity').val());
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function(){
-
             Morris.Bar({
                 element: 'morris-bar-chart',
-                data: [{
-                    device: 'iPhone',
-                    geekbench: 136
-                }, {
-                    device: 'iPhone 3G',
-                    geekbench: 137
-                }, {
-                    device: 'iPhone 3GS',
-                    geekbench: 275
-                }, {
-                    device: 'iPhone 4',
-                    geekbench: 380
-                }, {
-                    device: 'iPhone 4S',
-                    geekbench: 655
-                }, {
-                    device: 'iPhone 5',
-                    geekbench: 1571
-                }],
+                <?php
+                    if(!isset($_POST['type'])){
+                        $type = 2;
+                    }else $type = antiSQLInjection($_POST['type']);
+                    $user->print_bar_chart_data(antiSQLInjection($_POST['from']),antiSQLInjection($_POST['to']),$type,antiSQLInjection($_POST['city']));
+                ?>
                 xkey: 'device',
-                ykeys: ['geekbench'],
-                labels: ['Geekbench'],
+                ykeys: ['outros', 'você'],
+                labels: ['Outros', 'Você'],
                 barRatio: 0.4,
                 xLabelAngle: 35,
                 hideHover: 'auto',
@@ -184,7 +220,7 @@
         var pickerTo = new Pikaday({ field: document.getElementById('datepicker-to'),
                                position: "bottom-right",
                                reposition: false,
-                               format: "DD/MM/YY",
+                               format: "YYYY-MM-DD",
                                i18n: {
                                     previousMonth : 'Mês Anterior',
                                     nextMonth     : 'Próximo Mês',
@@ -197,7 +233,7 @@
         var pickerFrom = new Pikaday({ field: document.getElementById('datepicker-from'),
                                position: "bottom-right",
                                reposition: false,
-                               format: "DD/MM/YY",
+                               format: "YYYY-MM-DD",
                                i18n: {
                                     previousMonth : 'Mês Anterior',
                                     nextMonth     : 'Próximo Mês',
@@ -207,14 +243,23 @@
                                 }
                              });
 
+
         $("button#filter").click(function(){
             var initialDate = $("#datepicker-from").val().toString();
             var finalDate   = $("#datepicker-to").val().toString();
+            var granularity = $("#granularity").val();
+            var city        = $("#city").val();
+            var state       = $("#state").val();
+
+            console.info(initialDate);
+            console.info(finalDate);
+            console.info(granularity);
+            console.info(city);
+            console.info(state);
         })
     </script>
 
 </body>
 
 </html>
-
 

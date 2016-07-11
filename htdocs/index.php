@@ -76,6 +76,7 @@
                 </div>
                 <div class="form-group" style="text-align:center;">
                     <a href="#" class="btn btn-default send_form">Enviar</a>
+                     <a href="#" class="btn btn-default send_form">Entrar sem Arquivo</a>
                 </div>
             </div>
         </form>
@@ -203,7 +204,7 @@
                           <div class="form-group row">
                             <label for="inputCity" class="col-sm-2 form-control-label">Bairro</label>
                             <div class="col-sm-8">
-                              <select class="form-control" name ="district" id="inputDistrict" required>
+                              <select class="form-control" name="district" id="inputDistrict" required>
                                     <option> Selecione uma Cidade</option>
                               </select>
                             </div>

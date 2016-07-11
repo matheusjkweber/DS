@@ -52,7 +52,7 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
+                    <li >
                         <a href="dashboard.php"><i class="fa fa-fw fa-bar-chart-o"></i> Dashboard</a>
                     </li>
                     <li>
@@ -62,7 +62,7 @@
                         <a href="costs.php">-<i class="fa fa-usd" aria-hidden="true"></i> Despesas</a>
                     </li>
                     
-                    <li>
+                    <li class="active">
                         <a href="edit_user.php"><i class="fa fa-user" aria-hidden="true"></i> Editar perfil</a>
                     </li>
 
